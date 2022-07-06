@@ -1,6 +1,10 @@
 const express= require('express');
 const bodyParser = require('body-parser');
 const feedRoute = require('./routes/feed')
+
+const {mongoConnect} = require('./utils/database')
+
+
 const app = express();
 
 app.use(bodyParser.json())
@@ -11,8 +15,12 @@ app.use((req,res,next) => {
    res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization')
    next();
 })
+
+
 app.use('/feed',feedRoute)
 
 
+mongoConnect(() => {
+   app.listen(8080);
+})
 
-app.listen(8080);
